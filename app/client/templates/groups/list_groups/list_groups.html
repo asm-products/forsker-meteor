@@ -1,0 +1,23 @@
+<template name="ListGroups">
+  <h1>Groups List</h1>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>About</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each groups}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{about}}</td>
+          <td>{{#linkTo route='editGroup'}}<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>{{/linkTo}}</td>
+          <td> {{# quickRemoveButton collection="Groups" _id=this._id beforeRemove=beforeRemove style="background-color:transparent; border:none; color:#337ab7;"}}<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>{{/quickRemoveButton}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
