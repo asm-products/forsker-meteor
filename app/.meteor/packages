@@ -11,3 +11,8 @@ aldeed:collection2
 twbs:bootstrap
 aldeed:delete-button
 jquery
+anti:fake
+dburles:factory
+accounts-base
+accounts-password
+accounts-ui

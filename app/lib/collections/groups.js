@@ -1,45 +1,41 @@
 Groups = new Mongo.Collection('groups');
 
 
+function checkAuthor (userId, doc) {
+  // http://stackoverflow.com/questions/7310109/whats-the-difference-between-and-in-javascript
+  return (userId && doc.createdBy === userId);
+}
+
 if (Meteor.isServer) {
+
   Groups.allow({
     insert: function (userId, doc) {
-      return true;
+      return checkAuthor(userId, doc);
     },
 
     update: function (userId, doc, fieldNames, modifier) {
-      return true;
+      return checkAuthor(userId, doc);
     },
 
     remove: function (userId, doc) {
-      return true;
+      return checkAuthor(userId, doc);
     }
   });
-
-// Groups.deny({
-//   insert: function (userId, doc) {
-//     return true;
-//   },
-
-//   update: function (userId, doc, fieldNames, modifier) {
-//     return true;
-//   },
-
-//   remove: function (userId, doc) {
-//     return true;
-//   }
-// });
 }
 
 Groups.attachSchema(new SimpleSchema({
+  createdBy: {
+    type: String,
+    autoValue: function() {
+      return this.userId
+    }
+  },
   name: {
     type: String,
-    label: "Name",
     max: 100
   },
   about: {
     type: String,
-    label: "About",
     max: 1500
   },
   // keywords: {
@@ -49,21 +45,18 @@ Groups.attachSchema(new SimpleSchema({
   // },
   // university: {
   //   type: String,
-  //   label: "University",
   //   max: 100
   // },
   // website: {
   //   type: String,
-  //   label: "Website",
   //   max: 300,
   //   optional: true,
   // },
   // email:{
   //   type: [String],
   //   label: "Email(s)",
+  //   regEx: SimpleSchema.RegEx.Email
   //   maxCount: 4,
-  //   optional: true,
-
   // },  
   // telephone: {
   //   type: [String],
@@ -73,9 +66,24 @@ Groups.attachSchema(new SimpleSchema({
   // },
   // fax: {
   //   type: String,
-  //   label: "Fax",
   //   max: 50,
   //   optional:true
-  // }
+  // },
+  authors: {
+    type: [String],
+    autoValue: function() {return [this.userId];}
+  },
+   createdAt: {
+    type: Date,
+      autoValue: function() {
+        if (this.isInsert) {
+          return new Date;
+        } else if (this.isUpsert) {
+          return {$setOnInsert: new Date};
+        } else {
+          this.unset();
+        }
+      }
+  },
 
 }));

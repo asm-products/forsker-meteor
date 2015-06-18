@@ -1,4 +1,4 @@
-GroupsController = RouteController.extend({
+PositionsController = RouteController.extend({
   subscriptions: function () {
     // set up the subscriptions for the route and optionally
     // wait on them like this:
@@ -9,20 +9,15 @@ GroupsController = RouteController.extend({
     // the subscription handle is added to a reactive list
     // and when all items in this list are ready, this.ready()
     // returns true in any of your route functions.
-    
-    // the second parameter return information specific to 
-    // this user, otherwise nothing is returned
-    
-    // this.subscribe('groups', Meteor.userId());
+    // 
+    this.subscribe('positions');
     this.subscribe('groups');
   },
 
   data: function () {
     // return a global data context like this:
     // Items.findOne({_id: this.params._id});
-    // 
-    // in case you have /:id in the route (e.g., edit/5)
-    return Groups.findOne({_id: this.params._id});
+    return Positions.findOne({_id: this.params._id});
   },
 
   action: function () {
@@ -32,19 +27,18 @@ GroupsController = RouteController.extend({
     // might also perform some conditional logic. Override
     // the data context by providing it as an option in the
     // last parameter.
-    this.render('Groups', { /* data: {} */});
+    this.render('Positions', { /* data: {} */});
   },
 
   create: function() {
-    this.render('CreateGroup', {});
+    this.render('CreatePosition', {});
   },
 
   list: function() {
-    this.render('ListGroups', {});
+    this.render('ListPositions', {});
   },
 
   edit: function() {
-    this.render('EditGroup', {});
+    this.render('EditPosition', {});
   }
-
 });
